@@ -1,10 +1,16 @@
 import Vue from 'vue'
+import store from '../store/index'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from "../views/Login"
+import policy from "./policy"
+import team from "./team"
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
+  ...policy,
+  ...team,
   {
     path: '/',
     name: 'Home',
@@ -13,10 +19,20 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    beforeEnter: (to, from , next)=>{
+      store.commit('logout')
+      next()
+    }
   }
 ]
 

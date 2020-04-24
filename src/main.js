@@ -13,6 +13,7 @@ import 'firebase/firestore'
 import 'firebase/analytics'
 
 import './Imports/html'
+import './Imports/forms'
 
 Vue.config.productionTip = false
 

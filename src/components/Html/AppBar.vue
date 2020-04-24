@@ -20,9 +20,9 @@
             alt="Vuetify Logo"
             class="shrink mr-2"
             contain
-            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+            :src="logo"
             transition="scale-transition"
-            width="40"
+            width="60"
         />
       </div>
 
@@ -79,11 +79,13 @@
 </template>
 
 <script>
+  import logo from '../../assets/logo.png'
   export default {
     data:()=>({
+      logo,
       drawer: false,
       items:[
-        {icon: 'mdi-accounts', title: 'Equipos', to: '/teams'},
+        {icon: 'mdi-shield-account', title: 'Equipos', to: '/teams'},
         {icon: 'mdi-logout', title: 'Cerrar Sesión', to: '/logout'},
 
       ]

@@ -5,7 +5,7 @@
       width="300"
   >
     <v-card
-        color="primary"
+        color="success"
         dark
     >
       <v-card-text>

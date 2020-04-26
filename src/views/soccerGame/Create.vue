@@ -50,6 +50,9 @@
       </v-row>
       <v-row>
         <v-col align="center">
+          <return-button path="/soccer_games">
+            Volver a Partidos
+          </return-button>
           <v-btn color="success" @click="postSoccerGame">
             <v-icon>mdi-plus</v-icon>
             Crear

@@ -6,7 +6,8 @@ class Player {
     this.name = data.name?data.name:''
     this.lastName = data.lastName?data.lastName:''
     this.mail = data.mail?data.mail:''
-    this.teamId = null
+    this.teamId = data.teamId?data.teamId:null
+    this.photo = data.photo?data.photo:null
   }
 
   static Get(id, onsuccess){
@@ -35,7 +36,8 @@ class Player {
       name: this.name,
       lastName: this.lastName,
       mail: this.mail,
-      teamId: this.teamId
+      teamId: this.teamId,
+      photo: this.photo
     }
   }
 

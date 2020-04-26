@@ -11,6 +11,7 @@
                 color="success"
                 dark
                 v-on="on"
+                class="mt-6"
             >
               <v-icon>mdi-plus</v-icon>
               Agregar

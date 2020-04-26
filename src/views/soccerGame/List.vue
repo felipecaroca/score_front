@@ -28,25 +28,53 @@
       </v-col>
     </v-row>
     <simple-table :headers="['Fecha', 'Local', 'Visita', 'Opciones']">
-      <tr v-for="soccerGame in soccerGames" :key="soccerGame.id" >
+      <tr v-for="soccerGame in soccerGames" :key="soccerGame.id">
         <td>{{soccerGame.gameDate}}</td>
         <td>{{soccerGame.local.name}}</td>
         <td>{{soccerGame.visit.name}}</td>
         <td>
-          <v-btn color="info"
-                 small
-                 fab
-                 class="ma-1"
-          >
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn color="success"
-                 small
-                 fab
-                 class="ma-1"
-          >
-            <v-icon>mdi-soccer</v-icon>
-          </v-btn>
+          <v-tooltip left>
+            <template v-slot:activator="{on}">
+              <v-btn color="info"
+                     v-on="on"
+                     small
+                     fab
+                     class="ma-1"
+                     :to="'/soccer_games/'+soccerGame.id+'/formation'"
+              >
+                <v-icon>mdi-account-multiple-check</v-icon>
+              </v-btn>
+            </template>
+            <span>Manejar Formación</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template v-slot:activator="{on}">
+              <v-btn color="primary"
+                     small
+                     fab
+                     class="ma-1"
+                     v-on="on"
+                     :to="'/soccer_games/edit/'+soccerGame.id"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            <span>Editar Partido</span>
+          </v-tooltip>
+          <v-tooltip top>
+            <template v-slot:activator="{on}">
+              <v-btn color="success"
+                     small
+                     fab
+                     class="ma-1"
+                     v-on="on"
+                     :to="'/soccer_games/'+soccerGame.id+'/score'"
+              >
+                <v-icon>mdi-soccer</v-icon>
+              </v-btn>
+            </template>
+            <span>Jugar Partido</span>
+          </v-tooltip>
           <confirm-dialog :small="true" color="error"
                           :fab="true" icon="mdi-delete"
                           @onAccept="deleteSoccerGame(soccerGame)"
@@ -69,28 +97,28 @@
   import {SoccerGame} from "../../Models/SoccerGame"
 
   export default {
-    data:()=>({
-      search:{
+    data: () => ({
+      search: {
         date: null
       },
-      soccerGames:[]
+      soccerGames: []
     }),
     created() {
       this.getSoccerGames()
     },
-    methods:{
-      getSoccerGames(){
-        SoccerGame.List(this.search, (res)=>{
+    methods: {
+      getSoccerGames() {
+        SoccerGame.List(this.search, (res) => {
           this.soccerGames = []
-          res.data.forEach(reg=>{
+          res.data.forEach(reg => {
             this.soccerGames.push(new SoccerGame(reg))
           })
         })
       },
-      deleteSoccerGame(soccerGame){
-        soccerGame.Delete(()=>{
+      deleteSoccerGame(soccerGame) {
+        soccerGame.Delete(() => {
           this.$store.commit('openSnackBar', {
-            color:'success',
+            color: 'success',
             message: 'Registro eliminado correctamente'
           })
           this.getSoccerGames()

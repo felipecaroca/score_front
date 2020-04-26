@@ -48,10 +48,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let user = firebase.auth().currentUser
   let requireAuth = to.matched.some(record => record.meta.requireAuthenticated)
-  if (requireAuth && !user) next('/login')
-  //else if (!requireAuth && user) next('/home')
+  if (requireAuth && !user)
+    next('/login')
   else next()
-
 })
 
 export default router

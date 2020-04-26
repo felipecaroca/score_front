@@ -64,7 +64,7 @@
                 <v-btn color="info"
                        small
                        fab
-                       :to="'/players/edit/'+player.id"
+                       :to="'/teams/edit/'+teamId+'/player/edit/'+player.id"
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
@@ -86,7 +86,9 @@
               </td>
             </tr>
         </simple-table>
-
+        <return-button path="/teams">
+          Volver a Equipos
+        </return-button>
       </v-col>
     </v-row>
   </v-container>

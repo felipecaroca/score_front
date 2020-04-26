@@ -6,7 +6,7 @@
         dark
     >
 
-      <v-list class="transparent" v-if="user">
+      <v-list class="transparent" v-if="user.uid">
         <v-list-item @click="drawer = true">
           <v-list-item-avatar>
             <v-img :src="user.photoURL"/>

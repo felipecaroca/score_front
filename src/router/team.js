@@ -4,11 +4,17 @@ export default [
   {
     path: '/teams',
     name: 'teams',
-    component: Teams
+    component: Teams,
+    meta: {
+      requireAuthenticated: true
+    }
   },
   {
    path: '/teams/edit/:id',
    name: 'editTeam',
-   component: Edit
+   component: Edit,
+    meta: {
+      requireAuthenticated: true
+    }
   }
 ]

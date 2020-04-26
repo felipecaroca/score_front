@@ -5,11 +5,17 @@ export default [
   {
     path: '/soccer_games',
     name: 'soccer_games',
-    component: List
+    component: List,
+    meta: {
+      requireAuthenticated: true
+    }
   },
   {
     path: '/soccer_games/new',
     name: 'newSoccerGame',
-    component: Create
+    component: Create,
+    meta: {
+      requireAuthenticated: true
+    }
   }
 ]

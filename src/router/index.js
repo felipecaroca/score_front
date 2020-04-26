@@ -6,6 +6,7 @@ import Login from "../views/Login"
 import policy from "./policy"
 import team from "./team"
 import soccerGame from "./soccerGame"
+import firebase from "firebase/app"
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,15 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  let user = firebase.auth().currentUser
+  let requireAuth = to.matched.some(record => record.meta.requireAuthenticated)
+  if (requireAuth && !user) next('/login')
+  //else if (!requireAuth && user) next('/home')
+  else next()
+
 })
 
 export default router

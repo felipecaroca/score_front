@@ -46,12 +46,21 @@
         </v-dialog>
       </v-col>
       <v-col>
-        <form @submit.prevent="getTeams" >
-          <v-text-field label="Buscar equipo..." v-model="search.name"
-                        append-icon="mdi-magnify"
-                        @input="checkReset"
-                        ref="searchField"
-          />
+        <form @submit.prevent="getTeams">
+          <v-row>
+            <v-col>
+              <v-text-field label="Buscar equipo..." v-model="search.name"
+                            append-icon="mdi-magnify"
+                            ref="searchField"
+              />
+            </v-col>
+            <v-col class="mt-3">
+              <v-btn @click="getTeams">
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+
         </form>
 
       </v-col>
@@ -60,13 +69,14 @@
       <tr v-for="team in teams" :key="team.id">
         <td>{{team.name}}</td>
         <td>
-          <v-img :src="team.logo" width="40" />
+          <v-img :src="team.logo" width="40"/>
         </td>
         <td>
           <v-btn color="info"
                  fab
                  small
                  class="ma-1"
+                 :to="'/teams/edit/'+team.id"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
@@ -79,8 +89,6 @@
               </v-col>
             </v-row>
           </confirm-dialog>
-
-
         </td>
       </tr>
     </simple-table>
@@ -89,60 +97,48 @@
 
 <script>
   import firebase from 'firebase/app'
+  import {Team} from "../../Models/Team"
+
   export default {
-    data:()=>({
+    data: () => ({
       teams: [],
-      visible:false,
+      visible: false,
       search: {
-        name:''
+        name: ''
       }
     }),
     created() {
       this.getTeams()
     },
-    methods:{
-      checkReset(){
-        if (this.search.name === '')
-          this.getTeams()
-      },
-      teamCreated(){
+    methods: {
+      teamCreated() {
         this.visible = false
         this.getTeams()
       },
-      getTeams(){
+      getTeams() {
         let self = this
-        firebase.auth().onAuthStateChanged(function(){
-          self.$store.commit('setLoading', true)
-          let teams = firebase.functions().httpsCallable('getTeams')
-          teams(self.search).then((res) => {
-            self.teams = res.data
-          }).catch(err => {
-            self.$store.commit('openSnackBar', {
-              color: 'error',
-              message: err
+        firebase.auth().onAuthStateChanged(function () {
+          Team.List(self.search, (res) => {
+            self.teams = []
+            res.data.forEach(reg => {
+              self.teams.push(new Team(reg))
             })
-          }).finally(() => {
+          }, () => {
             self.$store.commit('setLoading', false)
-            self.$refs.searchField.focus()
+            if (self.$refs.searchField)
+              self.$refs.searchField.focus()
           })
         })
       },
-      deleteTeam(data){
+      deleteTeam(data) {
         let self = this
-        this.$store.commit('setLoading', true)
-        let deleteTeam = firebase.functions().httpsCallable('deleteTeam')
-        deleteTeam(data).then(()=>{
+        data.Delete(() => {
           self.$store.commit('openSnackBar', {
             color: 'success',
             message: 'Registro eliminado exitosamente'
           })
           self.getTeams()
-        }).catch(err=>{
-          self.$store.commit('openSnackBar',{
-            color:'error',
-            message: err
-          })
-        }).finally(()=> self.$store.commit('setLoading', false))
+        })
       }
     }
   }

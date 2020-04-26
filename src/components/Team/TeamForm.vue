@@ -1,84 +1,95 @@
 <template>
-  <v-form v-model="formValid" @submit.prevent="addTeam" align="center" ref="teamForm">
-    <v-row >
+  <v-form v-model="formValid" @submit.prevent="saveTeam" align="center" ref="teamForm">
+    <v-row>
       <v-col cols="12" align="center" justify="center">
         <v-img :src="team.logo" width="100" class="ma-3"/>
       </v-col>
     </v-row>
-    <v-text-field label="Nombre"
+    <v-text-field label="Nombre Equipo"
                   :rules="nameRules"
                   required
                   class="ma-1"
                   v-model="team.name"
     />
-    <v-file-input label="Escudo"
+    <v-file-input label="Escudo Equipo"
                   :multiple="false"
                   :show-size="true"
                   :counter="true"
                   class="ma-1"
                   v-model="logo"
     />
-    <v-btn block color="success" class="ma-1" @click="addTeam">
-      <v-icon>mdi-plus</v-icon>
-      Agregar
+    <v-btn block color="success" class="ma-1" @click="saveTeam">
+      <v-icon>{{teamId?'mdi-floppy':'mdi-plus'}}</v-icon>
+      {{teamId?'Guardar':'Agregar'}}
     </v-btn>
   </v-form>
 </template>
 
 <script>
   import {Team} from "../../Models/Team"
-  import firebase from 'firebase/app'
+  import {FileHelper} from "../../Helpers/fileHelper"
 
   export default {
-    data: ()=>({
+    props: ['teamId'],
+    data: () => ({
       team: new Team(),
+      self: null,
       logo: null,
       formValid: false,
       nameRules: [
         v => !!v || 'el nombre es requerido'
       ]
     }),
-    watch:{
-      logo: function(){
-        if (this.logo && this.logo.length > 0){
-          this.toBase64(this.logo[0]).then((res)=>{
+    created() {
+      this.self = this
+      if (this.teamId) {
+        this.getTeam(this.teamId)
+      }
+    },
+    watch: {
+      logo: function () {
+        if (this.logo && this.logo.length > 0) {
+          FileHelper.toBase64(this.logo[0]).then((res) => {
             this.team.logo = res
           })
-        }else{
+        } else {
           this.team.logo = new Team().logo
         }
       }
     },
-    methods:{
-      addTeam(){
-        if (this.$refs.teamForm.validate()){
-
-          this.$store.commit('setLoading', true)
-          let self = this
-          let addTeam = firebase.functions().httpsCallable('postTeam')
-          addTeam(self.team).then(()=>{
-            self.$store.commit('openSnackBar',{
-              color: 'success',
-              message: 'Equipo creado exitosamente'
-            })
-            this.$refs.teamForm.reset()
-            this.$emit('created')
-            this.team = new Team()
-          }).catch((err)=>{
-            self.$store.commit('openSnackBar', {
-              color: 'error',
-              message: err
-            })
-          }).finally(()=> self.$store.commit('setLoading', false))
+    methods: {
+      saveTeam() {
+        if (this.$refs.teamForm.validate()) {
+          if (this.teamId) {
+            this.updateTeam()
+          } else
+            this.addTeam()
         }
       },
-      toBase64(file){
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = error => reject(error);
-        });
+      getTeam(id) {
+        Team.Get(id, res => {
+          this.self.team = new Team(res.data)
+        })
+      },
+      addTeam() {
+        this.team.Post(() => {
+          this.self.$store.commit('openSnackBar', {
+            color: 'success',
+            message: 'Equipo creado exitosamente'
+          })
+          this.$emit('created')
+          this.team = new Team()
+          this.logo = null
+          this.$refs.teamForm.reset()
+        })
+      },
+      updateTeam() {
+        this.team.Update(()=>{
+          this.self.$store.commit('openSnackBar', {
+            color: 'success',
+            message: 'Equipo actualizado exitosamente'
+          })
+        })
       }
     }
   }

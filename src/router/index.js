@@ -5,12 +5,14 @@ import Home from '../views/Home.vue'
 import Login from "../views/Login"
 import policy from "./policy"
 import team from "./team"
+import soccerGame from "./soccerGame"
 
 Vue.use(VueRouter)
 
 const routes = [
   ...policy,
   ...team,
+  ...soccerGame,
   {
     path: '/',
     name: 'Home',
@@ -29,7 +31,7 @@ const routes = [
   {
     path: '/logout',
     name: 'logout',
-    beforeEnter: (to, from , next)=>{
+    beforeEnter: (to, from, next) => {
       store.commit('logout')
       next()
     }

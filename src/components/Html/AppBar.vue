@@ -11,7 +11,7 @@
           <v-list-item-avatar>
             <v-img :src="user.photoURL"/>
           </v-list-item-avatar>
-          {{user.displayName}}
+          <v-icon>mdi-menu</v-icon>
         </v-list-item>
       </v-list>
       <v-spacer></v-spacer>
@@ -86,6 +86,7 @@
       drawer: false,
       items:[
         {icon: 'mdi-shield-account', title: 'Equipos', to: '/teams'},
+        {icon: 'mdi-soccer-field', title: 'Partidos', to: '/soccer_games'},
         {icon: 'mdi-logout', title: 'Cerrar Sesión', to: '/logout'},
 
       ]

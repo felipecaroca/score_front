@@ -14,6 +14,7 @@ import 'firebase/analytics'
 
 import './Imports/html'
 import './Imports/forms'
+import './Imports/viewer'
 
 Vue.config.productionTip = false
 

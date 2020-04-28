@@ -8,6 +8,7 @@ class Player {
     this.mail = data.mail?data.mail:''
     this.teamId = data.teamId?data.teamId:null
     this.photo = data.photo?data.photo:null
+    this.fullName = this.name +' '+this.lastName
   }
 
   static Get(id, onsuccess){
@@ -37,7 +38,8 @@ class Player {
       lastName: this.lastName,
       mail: this.mail,
       teamId: this.teamId,
-      photo: this.photo
+      photo: this.photo,
+      fullName: this.fullName
     }
   }
 

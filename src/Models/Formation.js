@@ -4,10 +4,14 @@ class Formation {
 
   constructor(data = {}) {
     this.id = data.id?data.id:null
-    this.number = data.number?data.number:0
+    this.number = data.number?data.number:''
     this.playerId = data.playerId?data.playerId:null
     this.teamId = data.teamId?data.teamId:null
     this.isHolder = data.isHolder?data.isHolder:true
+    this.soccerGameId = data.soccerGameId?data.soccerGameId:null
+    this.goals = data.goals?data.goals:null
+    this.cards = data.cards?data.cards:null
+    this.change = data.change?data.change:null
   }
   static Get(id, onsuccess){
     FirebaseStoreHelper.processMethod('getFormation', onsuccess, {id: id})
@@ -35,7 +39,8 @@ class Formation {
       number: this.number,
       playerId: this.playerId,
       teamId: this.teamId,
-      isHolder: this.isHolder
+      isHolder: this.isHolder,
+      soccerGameId: this.soccerGameId
     }
   }
 }

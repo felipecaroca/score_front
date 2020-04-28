@@ -5,8 +5,8 @@ class FirebaseStoreHelper {
   static processMethod(methodName, onsuccess, data = null, onFinally){
     store.commit('setLoading', true)
     let self = this
-    let methodTeam = firebase.functions().httpsCallable(methodName)
-    methodTeam(data).then(onsuccess).catch(err=>{
+    let firebaseMethod = firebase.functions().httpsCallable(methodName)
+    firebaseMethod(data).then(onsuccess).catch(err=>{
       self.showError(err)
     }).finally(onFinally?onFinally:()=> store.commit('setLoading', false))
   }

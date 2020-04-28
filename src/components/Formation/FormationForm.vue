@@ -28,7 +28,6 @@
             <v-icon>mdi-plus</v-icon>
             Agregar
           </v-btn>
-          {{formation}}
         </v-col>
       </v-row>
     </v-form>
@@ -72,13 +71,16 @@
               this.showError('ya se encuentran los 11 titulares en la formación')
             } else {
               this.formation.teamId = this.teamId
+              this.formation.player = this.players.filter(a=>a.id === this.formation.playerId)[0]
               this.formation.soccerGameId = this.soccerGameId
               this.formation.Post(() => {
                 this.$store.commit('openSnackBar', {
                   color: 'success',
-                  message: 'Jugador agregado a fomración'
+                  message: 'Jugador agregado a formación'
                 })
                 this.formation = new Formation()
+                this.$refs.formationForm.reset()
+                this.$emit('saved')
               })
             }
           }

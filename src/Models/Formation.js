@@ -6,8 +6,9 @@ class Formation {
     this.id = data.id?data.id:null
     this.number = data.number?data.number:''
     this.playerId = data.playerId?data.playerId:null
+    this.player = data.player?data.player:null
     this.teamId = data.teamId?data.teamId:null
-    this.isHolder = data.isHolder?data.isHolder:true
+    this.isHolder = !!data.isHolder
     this.soccerGameId = data.soccerGameId?data.soccerGameId:null
     this.goals = data.goals?data.goals:null
     this.cards = data.cards?data.cards:null
@@ -18,7 +19,7 @@ class Formation {
   }
 
   static List(search, onsuccess, onFinally){
-    FirebaseStoreHelper.processMethod('getFormations', onsuccess, search, onFinally)
+    FirebaseStoreHelper.processMethod('listFormations', onsuccess, search, onFinally)
   }
 
   Post(onsuccess){
@@ -26,11 +27,15 @@ class Formation {
   }
 
   Update(onsuccess){
-    FirebaseStoreHelper.processMethod('putFormation', onsuccess, this.asData())
+    FirebaseStoreHelper.processMethod('updateFormation', onsuccess, this.asData())
   }
 
   Delete(onsuccess){
     FirebaseStoreHelper.processMethod('deleteFormation', onsuccess, this.asData())
+  }
+
+  GetPlayer(onsuccess){
+    FirebaseStoreHelper.processMethod('getPlayer', onsuccess, {id: this.playerId})
   }
 
   asData(){
@@ -38,6 +43,7 @@ class Formation {
       id: this.id,
       number: this.number,
       playerId: this.playerId,
+      player: this.player,
       teamId: this.teamId,
       isHolder: this.isHolder,
       soccerGameId: this.soccerGameId

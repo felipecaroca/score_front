@@ -10,6 +10,12 @@ class SoccerGame {
     this.visit = data.visit?data.visit:new Team()
     this.time = '00:00'
     this.secondCounter = 0
+    this.initFirstTime = data.initFirstTime?data.initFirstTime:null
+    this.finishFirstTime = data.finishFirstTime?data.finishFirstTime:null
+    this.initLastTime = data.initLastTime?data.initLastTime:null
+    this.finishLastTime = data.finishLastTime?data.finishLastTime:null
+    this.isRunning = !!data.isRunning
+    this.gameFinished = !!data.gameFinished
   }
 
   static Get(id, onsuccess){
@@ -40,7 +46,11 @@ class SoccerGame {
       local: this.local,
       visit: this.visit,
       time: this.time,
-      secondCounter: this.secondCounter
+      secondCounter: this.secondCounter,
+      isRunning: this.isRunning,
+      initFirstTime: this.initFirstTime,
+      initLastTime: this.initLastTime,
+      gameFinished: this.gameFinished
     }
   }
 }

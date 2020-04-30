@@ -55,7 +55,7 @@
             </v-col>
           </v-row>
         </v-form>
-        <simple-table :headers="['Nombre', 'Apellidos', 'Correo', 'Opciones']">
+        <simple-table :headers="['Nombre', 'Apellidos', 'Correo', 'Opciones']" height="300px">
             <tr v-for="player in players" :key="player.id">
               <td>{{player.name}}</td>
               <td>{{player.lastName}}</td>
@@ -86,7 +86,7 @@
               </td>
             </tr>
         </simple-table>
-        <return-button path="/teams">
+        <return-button path="/teams" class="mt-2">
           Volver a Equipos
         </return-button>
       </v-col>

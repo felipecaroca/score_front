@@ -1,8 +1,9 @@
 import List from "../views/soccerGame/List"
 import Create from "../views/soccerGame/Create"
 import Formation from "../views/soccerGame/Formation"
-import Score from "../views/soccerGame/Score"
+import ScoreManage from "../views/soccerGame/ScoreManage"
 import Edit from "../views/soccerGame/Edit"
+import Score from '../views/soccerGame/Score'
 
 export default [
   {
@@ -40,9 +41,14 @@ export default [
   {
     path: '/soccer_games/:id/score',
     name: 'SoccerGameScore',
-    component: Score,
+    component: ScoreManage,
     meta: {
       requireAuthenticated: true
     }
+  },
+  {
+    path: '/score/:id',
+    name: 'score',
+    component:Score
   }
 ]

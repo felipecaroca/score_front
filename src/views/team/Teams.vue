@@ -66,7 +66,7 @@
 
       </v-col>
     </v-row>
-    <simple-table :headers="['Nombre', 'Logo', 'Opciones']">
+    <simple-table :headers="['Nombre', 'Logo', 'Opciones']" height="300px">
       <tr v-for="team in teams" :key="team.id">
         <td>{{team.name}}</td>
         <td>

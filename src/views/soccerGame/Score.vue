@@ -1,33 +1,25 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col align="center">
-        <score-view :soccerGameId="soccerGameId" />
-
-      </v-col>
-    </v-row>
-  </v-container>
+  <score-view :soccerGameId="soccerGameId"/>
 </template>
 
 <script>
-  import {SoccerGame} from "../../Models/SoccerGame"
-
-
   export default {
     data:()=>({
-
-      soccerGameId: null,
-      soccerGame: null,
+      soccerGameId:null
     }),
     created() {
       if(this.$route.params.id)
         this.soccerGameId = this.$route.params.id
     },
+    mounted() {
+      this.removeElement('header')
+      this.removeElement('footer')
+    },
     methods:{
-      getSoccerGame(){
-        SoccerGame.Get({id: this.soccerGameId}, (res)=>{
-          this.soccerGame = new SoccerGame(res.data)
-        })
+      removeElement(element){
+        let tag = document.getElementsByTagName(element)
+        if (tag)
+          tag[0].parentNode.removeChild(tag[0])
       }
     }
   }

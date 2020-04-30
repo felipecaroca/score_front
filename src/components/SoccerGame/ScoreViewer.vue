@@ -33,7 +33,11 @@
             </v-row>
           </v-card-text>
           <v-card-actions>
-            {{localGoals}}
+            <v-row>
+              <v-col align="center">
+                <time-view :soccerGame="soccerGame" :isRunning="soccerGame.isRunning" />
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
       </v-sheet>
@@ -44,7 +48,8 @@
 <script>
   import scoreBack from '../../assets/score_backgroud.jpg'
   import firebase from 'firebase/app'
-  import {Formation} from "../../Models/Formation";
+  import {Formation} from "../../Models/Formation"
+  import {Goal} from "../../Models/Goal"
 
   export default {
     props: ['soccerGameId'],
@@ -93,14 +98,26 @@
           this.formation.filter(a=>a.teamId === this.soccerGame.visit.id):[]
       },
       localGoals(){
-        return [...this.localFormation.map(formation=>{
-          return formation.goals
-        })]
+        let localGoals  = []
+        this.localFormation.forEach(formation=>{
+          if(formation.goals){
+            formation.goals.forEach(goal=>{
+              localGoals.push(new Goal(goal))
+            })
+          }
+        })
+        return localGoals
       },
       visitGoals(){
-        return [...this.visitFormation.map(formation=>{
-          return formation.goals
-        })]
+        let visitGoals = []
+        this.visitFormation.forEach(formation=>{
+          if (formation.goals){
+            formation.goals.forEach(goal=>{
+              visitGoals.push(new Goal(goal))
+            })
+          }
+        })
+        return visitGoals
       },
       totalLocalGoals(){
         return this.localGoals.length

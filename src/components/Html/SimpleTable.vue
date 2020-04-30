@@ -1,5 +1,5 @@
 <template>
-  <v-simple-table fixed-header height="300px">
+  <v-simple-table :fixed-header="!notFixed" :height="height">
     <template v-slot:default>
       <thead>
       <tr>
@@ -15,6 +15,6 @@
 
 <script>
   export default {
-    props: ['headers']
+    props: ['headers', 'notFixed', 'height']
   }
 </script>

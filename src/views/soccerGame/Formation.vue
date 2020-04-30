@@ -42,7 +42,7 @@
               <v-col>
                 <p>Reservas</p>
                 <simple-table :headers="['Jugador', 'N° Camiseta','Eliminar']"
-
+                              height="300px"
                 >
                   <tr v-for="formation in notHolders"
                       :key="formation.id">

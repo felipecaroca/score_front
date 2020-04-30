@@ -27,7 +27,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <simple-table :headers="['Fecha', 'Local', 'Visita', 'Opciones']">
+    <simple-table :headers="['Fecha', 'Local', 'Visita', 'Opciones']" height="300px">
       <tr v-for="soccerGame in soccerGames" :key="soccerGame.id">
         <td>{{soccerGame.gameDate}}</td>
         <td>{{soccerGame.local.name}}</td>

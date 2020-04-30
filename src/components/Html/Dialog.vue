@@ -7,6 +7,7 @@
       <v-btn
           :color="btnColor"
           dark
+          :small="small"
           v-on="on"
       >
         <slot name="btnText"></slot>
@@ -44,7 +45,7 @@
 
 <script>
   export default {
-    props:['btnColor'],
+    props:['btnColor','small'],
     data:()=>({
       visible: false
     })

@@ -12,7 +12,6 @@ class Formation {
     this.soccerGameId = data.soccerGameId?data.soccerGameId:null
     this.goals = data.goals?data.goals:[]
     this.cards = data.cards?data.cards:[]
-    this.change = data.change?data.change:[]
   }
   static Get(id, onsuccess){
     FirebaseStoreHelper.processMethod('getFormation', onsuccess, {id: id})
@@ -34,10 +33,6 @@ class Formation {
     FirebaseStoreHelper.processMethod('deleteFormation', onsuccess, this.asData())
   }
 
-  GetPlayer(onsuccess){
-    FirebaseStoreHelper.processMethod('getPlayer', onsuccess, {id: this.playerId})
-  }
-
   asData(){
     return {
       id: this.id,
@@ -48,8 +43,7 @@ class Formation {
       isHolder: this.isHolder,
       soccerGameId: this.soccerGameId,
       goals: this.goals,
-      cards: this.cards,
-      change: this.change
+      cards: this.cards
     }
   }
 }

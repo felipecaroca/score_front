@@ -43,7 +43,7 @@
                       <v-btn small
                              v-on="on"
                              @click="addGoal(reg)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning || isDisabled(reg)"
                       >
                         {{reg.goals?reg.goals.length:0}}
                       </v-btn>
@@ -58,7 +58,7 @@
                              color="yellow"
                              v-on="on"
                              @click="addCard(reg,true)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning  || isDisabled(reg)"
                       >
                         {{reg.cards?reg.cards.filter(a=>a.isYellow).length:0}}
                       </v-btn>
@@ -74,7 +74,7 @@
                              class="white--text"
                              v-on="on"
                              @click="addCard(reg, false)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning  || isDisabled(reg)"
                       >
                         {{reg.cards?reg.cards.filter(a=>!a.isYellow).length:0}}
                       </v-btn>
@@ -82,16 +82,69 @@
                     <span>Marcar Tarjeta Roja</span>
                   </v-tooltip>
                 </td>
+                <td>
+                  <simple-dialog btnColor="primary" :small="true">
+                    <span slot="btnText">Detalle</span>
+                    <span slot="title">Detalle Jugador {{reg.player.fullName}}</span>
+                    <v-card>
+                      <v-card-text>
+                        <v-card-title>
+                          Goles
+                        </v-card-title>
+                        <simple-table :headers="['minuto', 'tiempo', 'anular']">
+                          <tr v-for="goal in reg.goals" :key="goal.id">
+                            <td>{{goal.minute}}</td>
+                            <td>{{goal.half}}</td>
+                            <td>
+                              <v-btn color="error" fab small @click="deleteGoal(reg, goal)"
+                                     v-if="!soccerGame.gameFinished">
+                                <v-icon>mdi-cancel</v-icon>
+                              </v-btn>
+                            </td>
+                          </tr>
+                        </simple-table>
+                      </v-card-text>
+                    </v-card>
+                  </simple-dialog>
+                </td>
               </tr>
             </simple-table>
             <v-card-title>
               <p>Reservas</p>
             </v-card-title>
-            <simple-table :headers="['Nombre', 'Camiseta','Cambiar']" :notFixed="true">
+            <simple-table :headers="['Nombre', 'Camiseta','Cambiar por']" :notFixed="true">
               <tr v-for="reg in localNotHolderFormation" :key="reg.id">
                 <td>{{reg.player.fullName}}</td>
                 <td>{{reg.number}}</td>
-                <td></td>
+                <td>
+                  <v-row>
+                    <v-col>
+                      <v-autocomplete label="Jugador que sale..."
+                                      :items="localHolderFormation.filter(a=>!isDisabled(a))"
+                                      item-text="player.fullName"
+                                      item-value="id"
+                                      v-model="localOutChangeId"
+                                      :disabled="soccerGame.gameFinished"
+                      />
+                    </v-col>
+                    <v-col>
+                      <v-tooltip top>
+                        <template v-slot:activator="{on}">
+                          <v-btn small
+                                 class="mt-2"
+                                 v-on="on"
+                                 fab
+                                 @click="changePlayer(reg, true)"
+                                 :disabled="soccerGame.gameFinished"
+                          >
+                            <v-icon>mdi-account-switch</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Cambiar Jugador</span>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
+                </td>
               </tr>
             </simple-table>
           </v-card-text>
@@ -113,7 +166,7 @@
                       <v-btn small
                              v-on="on"
                              @click="addGoal(reg)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning || isDisabled(reg)"
                       >
                         {{reg.goals?reg.goals.length:0}}
                       </v-btn>
@@ -128,7 +181,7 @@
                              color="yellow"
                              v-on="on"
                              @click="addCard(reg,true)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning  || isDisabled(reg)"
                       >
                         {{reg.cards?reg.cards.filter(a=>a.isYellow).length:0}}
                       </v-btn>
@@ -144,7 +197,7 @@
                              class="white--text"
                              v-on="on"
                              @click="addCard(reg, false)"
-                             :disabled="!soccerGame.isRunning"
+                             :disabled="!soccerGame.isRunning  || isDisabled(reg)"
                       >
                         {{reg.cards?reg.cards.filter(a=>!a.isYellow).length:0}}
                       </v-btn>
@@ -152,6 +205,31 @@
                     <span>Marcar Tarjeta Roja</span>
                   </v-tooltip>
                 </td>
+                <td>
+                  <simple-dialog btnColor="primary" :small="true">
+                    <span slot="btnText">Detalle</span>
+                    <span slot="title">Detalle Jugador {{reg.player.fullName}}</span>
+                    <v-card>
+                      <v-card-text>
+                        <v-card-title>
+                          Goles
+                        </v-card-title>
+                        <simple-table :headers="['minuto', 'tiempo', 'anular']">
+                          <tr v-for="goal in reg.goals" :key="goal.id">
+                            <td>{{goal.minute}}</td>
+                            <td>{{goal.half}}</td>
+                            <td>
+                              <v-btn color="error" fab small @click="deleteGoal(reg, goal)"
+                                     v-if="!soccerGame.gameFinished">
+                                <v-icon>mdi-cancel</v-icon>
+                              </v-btn>
+                            </td>
+                          </tr>
+                        </simple-table>
+                      </v-card-text>
+                    </v-card>
+                    </simple-dialog>
+                  </td>
               </tr>
             </simple-table>
             <v-card-title>
@@ -161,11 +239,46 @@
               <tr v-for="reg in visitNotHolderFormation" :key="reg.id">
                 <td>{{reg.player.fullName}}</td>
                 <td>{{reg.number}}</td>
-                <td></td>
+                <td>
+                  <v-row>
+                    <v-col>
+                      <v-autocomplete label="Jugador que sale..."
+                                      :items="visitHolderFormation.filter(a=>!isDisabled(a))"
+                                      item-text="player.fullName"
+                                      item-value="id"
+                                      v-model="visitOutChangeId"
+                                      :disabled="soccerGame.gameFinished"
+                      />
+                    </v-col>
+                    <v-col>
+                      <v-tooltip top>
+                        <template v-slot:activator="{on}">
+                          <v-btn small
+                                 class="mt-2"
+                                 v-on="on"
+                                 fab
+                                 @click="changePlayer(reg, false)"
+                                 :disabled="soccerGame.gameFinished"
+                          >
+                            <v-icon>mdi-account-switch</v-icon>
+                          </v-btn>
+                        </template>
+                        <span>Cambiar Jugador</span>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
+                </td>
               </tr>
             </simple-table>
           </v-card-text>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col align="center">
+        <return-button :path="'/soccer_games'">
+          Volver a Partidos
+        </return-button>
       </v-col>
     </v-row>
   </v-container>
@@ -173,13 +286,16 @@
 
 <script>
   import {SoccerGame} from "../../Models/SoccerGame"
-  import {Formation} from "../../Models/Formation";
-  import {Goal} from "../../Models/Goal";
-  import {Card} from "../../Models/Card";
+  import {Formation} from "../../Models/Formation"
+  import {Goal} from "../../Models/Goal"
+  import {Card} from "../../Models/Card"
+  import {Change} from '../../Models/Change'
 
 
   export default {
     data: () => ({
+      visitOutChangeId: null,
+      localOutChangeId: null,
       formation: [],
       soccerGameId: null,
       soccerGame: null,
@@ -195,6 +311,60 @@
       }
     },
     methods: {
+      isDisabled(formation){
+        return formation.cards.filter(a=>!a.isYellow).length === 1 ||
+            formation.cards.filter(a=>a.isYellow).length == 2
+      },
+      deleteGoal(formation, goal){
+        formation.goals = formation.goals.filter(a=>a !== goal)
+        formation.Update(()=>{
+          this.$store.commit('openSnackBar',{
+            color: 'success',
+            message: 'Gol anulado correctamente'
+          })
+        })
+      },
+      changePlayer(formationIn, isLocal){
+        if(isLocal && !this.localOutChangeId){
+          this.$store.commit('openSnackBar',{
+            color:'error',
+            message:'debe seleccionar el jugador que sale'
+          })
+        }else if(!isLocal && !this.visitOutChangeId){
+          this.$store.commit('openSnackBar',{
+            color:'error',
+            message:'debe seleccionar el jugador que sale'
+          })
+        }else{
+          let change = new Change({
+            id: new Date().getTime(),
+            formationIn: formationIn.id,
+            formationOut: isLocal?this.localOutChangeId: this.visitOutChangeId,
+            time: this.soccerGame.time,
+            half: this.soccerGame.currentHalf,
+            isLocal: isLocal
+          })
+          this.soccerGame.changes.push(change)
+          this.soccerGame.Update(()=>{
+
+            formationIn.isHolder = true
+            formationIn.Update(()=>{
+              let out = this.formation.filter(a=>a.id === change.formationOut)[0]
+              out.isHolder = false
+              out.Update(()=>{
+                this.$store.commit('openSnackBar',{
+                  color: 'success',
+                  message: 'cambio realizado exitosamente'
+                })
+                if (isLocal)
+                  this.localOutChangeId = null
+                else
+                  this.visitOutChangeId = null
+              })
+            })
+          })
+        }
+      },
       initTime(){
         if(this.soccerGame && (!this.soccerGame.initFirstTime || !this.soccerGame.initLastTime)){
           this.soccerGame.isRunning = true
@@ -244,7 +414,8 @@
         if (this.soccerGame && this.soccerGame.isRunning) {
           let newGoal = new Goal({
             formationId: formation.id,
-            minute: this.soccerGame.time
+            minute: this.soccerGame.time,
+            half: this.soccerGame.currentHalf
           })
           formation.goals.push(newGoal)
           formation.Update(()=>{
@@ -257,7 +428,8 @@
           let newCard = new Card({
             formationId: formation.id,
             isYellow: isYellow,
-            minute: this.soccerGame.time
+            minute: this.soccerGame.time,
+            half: this.soccerGame.currentHalf
           })
           formation.cards.push(newCard)
           formation.Update(()=>{

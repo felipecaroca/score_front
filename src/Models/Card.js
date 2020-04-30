@@ -6,6 +6,7 @@ class Card {
     this.formationId = data.formationId
     this.isYellow = data.isYellow
     this.minute = data.minute
+    this.half = data.half?data.half:1
   }
   Post(onsuccess){
     FirebaseStoreHelper.processMethod('postCard', onsuccess, this.asData())
@@ -20,7 +21,8 @@ class Card {
       id: this.id,
       formationId: this.formationId,
       isYellow: this.isYellow,
-      minute: this.minute
+      minute: this.minute,
+      half: this.half
     }
   }
 }

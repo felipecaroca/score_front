@@ -5,6 +5,7 @@ class Goal {
     this.id = data.id?data.id:new Date().getTime()
     this.formationId = data.formationId?data.formationId:''
     this.minute = data.minute?data.minute:''
+    this.half = data.half?data.half:1
   }
 
   Post(onsuccess){
@@ -19,7 +20,8 @@ class Goal {
     return {
       id: this.id,
       formationId: this.formationId,
-      minute: this.minute
+      minute: this.minute,
+      half: this.half
     }
   }
 }

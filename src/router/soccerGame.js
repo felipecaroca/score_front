@@ -4,6 +4,7 @@ import Formation from "../views/soccerGame/Formation"
 import ScoreManage from "../views/soccerGame/ScoreManage"
 import Edit from "../views/soccerGame/Edit"
 import Score from '../views/soccerGame/Score'
+import ScoreResult from "../views/soccerGame/ScoreResult"
 
 export default [
   {
@@ -42,6 +43,14 @@ export default [
     path: '/soccer_games/:id/score',
     name: 'SoccerGameScore',
     component: ScoreManage,
+    meta: {
+      requireAuthenticated: true
+    }
+  },
+  {
+    path: '/soccer_games/:id/result',
+    name: 'SoccerGameScoreResult',
+    component: ScoreResult,
     meta: {
       requireAuthenticated: true
     }

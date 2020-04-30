@@ -41,6 +41,7 @@
                      fab
                      class="ma-1"
                      :to="'/soccer_games/'+soccerGame.id+'/formation'"
+                     v-if="!soccerGame.gameFinished"
               >
                 <v-icon>mdi-account-multiple-check</v-icon>
               </v-btn>
@@ -55,13 +56,14 @@
                      class="ma-1"
                      v-on="on"
                      :to="'/soccer_games/edit/'+soccerGame.id"
+                     v-if="!soccerGame.gameFinished"
               >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </template>
             <span>Editar Partido</span>
           </v-tooltip>
-          <v-tooltip top>
+          <v-tooltip top v-if="!soccerGame.gameFinished">
             <template v-slot:activator="{on}">
               <v-btn color="success"
                      small
@@ -75,7 +77,22 @@
             </template>
             <span>Jugar Partido</span>
           </v-tooltip>
-          <confirm-dialog :small="true" color="error"
+          <v-tooltip top v-if="soccerGame.gameFinished">
+            <template v-slot:activator="{on}">
+              <v-btn color="success"
+                     small
+                     fab
+                     class="ma-1"
+                     v-on="on"
+                     :to="'/soccer_games/'+soccerGame.id+'/result'"
+              >
+                <v-icon>mdi-file</v-icon>
+              </v-btn>
+            </template>
+            <span>Ver Resultado</span>
+          </v-tooltip>
+          <confirm-dialog v-if="!soccerGame.gameFinished"
+                          :small="true" color="error"
                           :fab="true" icon="mdi-delete"
                           @onAccept="deleteSoccerGame(soccerGame)"
           >

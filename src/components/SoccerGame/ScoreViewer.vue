@@ -80,6 +80,7 @@
         let self = this
         firebase.firestore().collection('users')
         .doc(uid).collection('formations')
+          .where('soccerGameId', '==', this.soccerGameId)
         .onSnapshot(snapshot => {
           self.formation =[]
           snapshot.docs.forEach(reg=>{

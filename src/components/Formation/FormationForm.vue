@@ -115,7 +115,7 @@
       },
       selectedNumbers() {
         return this.currentFormation ?
-          this.currentFormation.map(formation => {
+          this.currentFormation.filter(a=>a.teamId === this.teamId).map(formation => {
             return formation.number
           }) : []
       },

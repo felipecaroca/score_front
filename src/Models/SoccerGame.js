@@ -16,6 +16,8 @@ class SoccerGame {
     this.finishLastTime = data.finishLastTime?data.finishLastTime:null
     this.isRunning = !!data.isRunning
     this.gameFinished = !!data.gameFinished
+    this.currentHalf = !this.initLastTime? 1 : 2
+    this.changes = data.changes?data.changes:[]
   }
 
   static Get(id, onsuccess){
@@ -49,8 +51,12 @@ class SoccerGame {
       secondCounter: this.secondCounter,
       isRunning: this.isRunning,
       initFirstTime: this.initFirstTime,
+      finishFirstTime: this.finishFirstTime,
       initLastTime: this.initLastTime,
-      gameFinished: this.gameFinished
+      finishLastTime: this.finishLastTime,
+      currentHalf: this.currentHalf,
+      gameFinished: this.gameFinished,
+      changes: this.changes
     }
   }
 }

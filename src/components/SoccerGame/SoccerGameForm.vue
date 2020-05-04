@@ -108,8 +108,11 @@
           res.data.forEach(reg=>{
             this.teams.push(new Team(reg))
           })
+        }, ()=>{
           if(this.soccerGameId && this.soccerGameId !== this.soccerGame.id)
             this.getSoccerGame()
+          else
+            this.$store.commit('setLoading', false)
         })
       },
       getSoccerGame(){

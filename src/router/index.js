@@ -6,6 +6,7 @@ import Login from "../views/Login"
 import policy from "./policy"
 import team from "./team"
 import soccerGame from "./soccerGame"
+import Presentation from "../views/Presentation"
 import firebase from "firebase/app"
 
 Vue.use(VueRouter)
@@ -23,6 +24,11 @@ const routes = [
     path: '/about',
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: Presentation
   },
   {
     path: '/login',

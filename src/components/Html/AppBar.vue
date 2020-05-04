@@ -8,10 +8,25 @@
 
       <v-list class="transparent" v-if="user.uid">
         <v-list-item @click="drawer = true">
-          <v-list-item-avatar>
-            <v-img :src="user.photoURL"/>
+          <v-list-item-avatar v-if="user.photoURL">
+            <v-img :src="user.photoURL" />
           </v-list-item-avatar>
           <v-icon>mdi-menu</v-icon>
+        </v-list-item>
+      </v-list>
+      <v-list class="transparent">
+        <v-list-item to="/">
+          <v-icon>mdi-home</v-icon>
+        </v-list-item>
+      </v-list>
+      <v-list class="transparent" v-if="user.uid">
+        <v-list-item to="/help">
+          <v-icon>mdi-help-circle</v-icon>
+        </v-list-item>
+      </v-list>
+      <v-list class="transparent">
+        <v-list-item to="/about">
+          <v-icon>mdi-information</v-icon>
         </v-list-item>
       </v-list>
       <v-spacer></v-spacer>
@@ -79,24 +94,19 @@
 </template>
 
 <script>
-  import logo from '../../assets/logo.png'
+  import logo from '../../assets/logo_score_white.png'
   export default {
     data:()=>({
       logo,
       drawer: false,
       items:[
+        {icon: 'mdi-home', title: 'Inicio', to: '/'},
         {icon: 'mdi-shield-account', title: 'Equipos', to: '/teams'},
         {icon: 'mdi-soccer-field', title: 'Partidos', to: '/soccer_games'},
         {icon: 'mdi-logout', title: 'Cerrar Sesión', to: '/logout'},
 
       ]
     }),
-    methods:{
-
-    },
-    created() {
-
-    },
     computed:{
       user() {
         return this.$store.getters.getUser

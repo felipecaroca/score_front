@@ -92,7 +92,6 @@
     created() {
       if (this.$route.params.id)
         this.soccerGameId = this.$route.params.id
-      this.getSoccerGame()
       this.getFormation()
     },
     methods: {
@@ -108,6 +107,11 @@
             let tmp = new Formation(reg)
             this.currentFormation.push(tmp)
           })
+        }, ()=>{
+          if ((this.soccerGame && this.soccerGame.id !== this.soccerGameId) || !this.soccerGame)
+            this.getSoccerGame()
+          else
+            this.$store.commit('setLoading', false)
         })
       },
       deleteFormation(formation) {
@@ -118,7 +122,7 @@
     },
     computed: {
       switchText() {
-        return this.visit ? 'Getionar Local' : 'Getionar Visita'
+        return this.visit ? 'Gestionar Local' : 'Gestionar Visita'
       },
       currentTeam() {
         if (!this.soccerGame)

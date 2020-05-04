@@ -123,8 +123,8 @@
                                       :items="localHolderFormation.filter(a=>!isDisabled(a))"
                                       item-text="player.fullName"
                                       item-value="id"
-                                      v-model="localOutChangeId"
-                                      :disabled="soccerGame.gameFinished"
+                                      v-model="reg.outChangeId"
+                                      :disabled="!soccerGame.isRunning  || soccerGame.gameFinished"
                       />
                     </v-col>
                     <v-col>
@@ -135,7 +135,7 @@
                                  v-on="on"
                                  fab
                                  @click="changePlayer(reg, true)"
-                                 :disabled="soccerGame.gameFinished"
+                                 :disabled="!soccerGame.isRunning  || soccerGame.gameFinished"
                           >
                             <v-icon>mdi-account-switch</v-icon>
                           </v-btn>
@@ -246,8 +246,8 @@
                                       :items="visitHolderFormation.filter(a=>!isDisabled(a))"
                                       item-text="player.fullName"
                                       item-value="id"
-                                      v-model="visitOutChangeId"
-                                      :disabled="soccerGame.gameFinished"
+                                      v-model="reg.outChangeId"
+                                      :disabled="!soccerGame.isRunning  ||  soccerGame.gameFinished"
                       />
                     </v-col>
                     <v-col>
@@ -258,7 +258,7 @@
                                  v-on="on"
                                  fab
                                  @click="changePlayer(reg, false)"
-                                 :disabled="soccerGame.gameFinished"
+                                 :disabled="!soccerGame.isRunning  || soccerGame.gameFinished"
                           >
                             <v-icon>mdi-account-switch</v-icon>
                           </v-btn>
@@ -294,8 +294,6 @@
 
   export default {
     data: () => ({
-      visitOutChangeId: null,
-      localOutChangeId: null,
       formation: [],
       soccerGameId: null,
       soccerGame: null,
@@ -313,7 +311,7 @@
     methods: {
       isDisabled(formation){
         return formation.cards.filter(a=>!a.isYellow).length === 1 ||
-            formation.cards.filter(a=>a.isYellow).length == 2
+            formation.cards.filter(a=>a.isYellow).length === 2
       },
       deleteGoal(formation, goal){
         formation.goals = formation.goals.filter(a=>a !== goal)
@@ -325,12 +323,7 @@
         })
       },
       changePlayer(formationIn, isLocal){
-        if(isLocal && !this.localOutChangeId){
-          this.$store.commit('openSnackBar',{
-            color:'error',
-            message:'debe seleccionar el jugador que sale'
-          })
-        }else if(!isLocal && !this.visitOutChangeId){
+        if(!formationIn.outChangeId){
           this.$store.commit('openSnackBar',{
             color:'error',
             message:'debe seleccionar el jugador que sale'
@@ -339,7 +332,7 @@
           let change = new Change({
             id: new Date().getTime(),
             formationIn: formationIn.id,
-            formationOut: isLocal?this.localOutChangeId: this.visitOutChangeId,
+            formationOut: formationIn.outChangeId,
             time: this.soccerGame.time,
             half: this.soccerGame.currentHalf,
             isLocal: isLocal
@@ -356,10 +349,6 @@
                   color: 'success',
                   message: 'cambio realizado exitosamente'
                 })
-                if (isLocal)
-                  this.localOutChangeId = null
-                else
-                  this.visitOutChangeId = null
               })
             })
           })

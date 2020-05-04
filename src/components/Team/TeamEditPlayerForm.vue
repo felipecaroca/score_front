@@ -67,8 +67,6 @@
     }),
     created() {
       this.getTeams()
-      if(this.playerId)
-        this.getPlayer()
     },
     watch: {
       photo: function(){
@@ -79,9 +77,7 @@
         }else{
           this.player.photo = null
           this.photo = noImage
-
         }
-
       }
     },
     methods: {
@@ -104,6 +100,9 @@
           res.data.forEach(reg=>{
             this.teams.push(new Team(reg))
           })
+        },()=>{
+          if(this.playerId)
+            this.getPlayer()
         })
       }
     }

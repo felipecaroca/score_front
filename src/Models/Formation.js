@@ -12,6 +12,7 @@ class Formation {
     this.soccerGameId = data.soccerGameId?data.soccerGameId:null
     this.goals = data.goals?data.goals:[]
     this.cards = data.cards?data.cards:[]
+    this.outChangeId = null
   }
   static Get(id, onsuccess){
     FirebaseStoreHelper.processMethod('getFormation', onsuccess, {id: id})

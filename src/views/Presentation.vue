@@ -3,14 +3,14 @@
     <v-row>
       <v-col>
         <p>
-          Para comenzar primero debe iniciar sesión en el sistema presionando el botón <b>iniciar sesión</b> de la parte
+          Para comenzar primero debes iniciar sesión en el sistema presionando el botón <b>iniciar sesión</b> de la parte
           superior derecha.
         </p>
         <p>
-          si no tienes una cuenta puedes crearla en el mismo lugar.
+          Si no tienes una cuenta, puedes crearla en el mismo lugar.
         </p>
         <p>
-          si ya tienes tu cuenta y te encuentras logueado solo debes seguir los siguientes pasos:
+          Si ya tienes tu cuenta y te encuentras logueado solo debes seguir estos pasos:
         </p>
       </v-col>
       <v-col align="center">
@@ -27,13 +27,13 @@
       </v-col>
       <v-col>
         <p>
-          Crea y maneja tus equipo, para esto debes entrar al menú <b>Equipos</b> del menú que aparece al presionar tu
+          Crea y maneja tus equipos, para esto debes entrar al menú <b>Equipos</b> de las opciones que aparecen al presionar tu
           nombre de usuario en la parte superior izquierda.</p>
         <p>
-          Acá podrás crear nuevos equipos que jugarán agregando el nombre y su logo, además de editar o eliminar
+          Acá podrás crear los nuevos equipos que jugarán agregando el nombre y su logo, además de editar o eliminar
           equipos existentes.
         </p>
-        <p>Además puedes agrega los miembros del equipo mediante el menú de edición</p>
+        <p>Además puedes agrega los miembros del equipo mediante el menú de edición.</p>
       </v-col>
     </v-row>
     <h1 class="display-1" align="right">Crea Partidos</h1>
@@ -62,7 +62,7 @@
       </v-col>
       <v-col md="4">
         <p>
-          Ingresa al marcador del partido presionando sobre el botón con el icono
+          Ingresa al marcador del partido presionando sobre el botón con el ícono
           <v-icon color="success">mdi-soccer</v-icon>
         </p>
         <p>
@@ -70,7 +70,7 @@
         </p>
         <p>
           Por otra parte, puedes mostrar el marcador del partido en una ventana nueva para poder proyectar hacia el
-          público del partido
+          público del partido.
         </p>
         <v-img :src="scorePublic" width="500" />
       </v-col>
